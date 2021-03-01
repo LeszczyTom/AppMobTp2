@@ -6,12 +6,13 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.room.*;
 
-@Entity
+@Entity(tableName = "booksDb")
 public class Book  {
 
     public static final String TAG = Book.class.getSimpleName();
 
     @PrimaryKey
+    @ColumnInfo(name = "bookId")
     private long id;
 
     private String title;
