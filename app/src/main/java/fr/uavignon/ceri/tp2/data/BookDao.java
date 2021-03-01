@@ -12,12 +12,16 @@ import androidx.room.Update;
 public interface BookDao {
     @Update
     void updateBook(Book book);
+
     @Insert
     void insertBook(Book book);
-    //Todo: query qqch
+
+    @Query("select * from booksDb where bookId = :id")
     Book getBook(long id);
-    @Delete
+
+    @Query("delete from booksDb where bookId = :id")
     void deleteBook(long id);
-    @Query("Select * from Book")
+
+    @Query("Select * from booksDb")
     List<Book> getAllBooks();
 }
