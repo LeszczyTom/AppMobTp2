@@ -4,12 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.*;
 
-
+@Entity
 public class Book  {
 
     public static final String TAG = Book.class.getSimpleName();
 
+    @PrimaryKey
+    private long id;
 
     private String title;
     private String authors;
