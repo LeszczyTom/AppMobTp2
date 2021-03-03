@@ -6,20 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import fr.uavignon.ceri.tp2.data.Book;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 public class ListFragment extends Fragment {
 
-    RecyclerView recyclerView;
+    RecyclerAdapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
     ListViewModel viewModel;
+
+    RecyclerAdapter adapter2;
 
     @Override
     public View onCreateView(
@@ -34,19 +40,27 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(ListViewModel.class);
-        recyclerView = view.findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new RecyclerAdapter();
-        recyclerView.setAdapter(adapter);
+        observerSetup();
+        recyclerSetup();
 
-        FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
+    }
+
+    private void recyclerSetup() {
+        RecyclerView recyclerView;
+        adapter = new RecyclerAdapter();
+        recyclerView = getView().findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void observerSetup() {
+        viewModel.getAllBooks().observe(getViewLifecycleOwner(),
+                new Observer<List<Book>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<Book> Books) {
+                        //adapter.setBookList(Books);
+                    }
+                });
     }
 }

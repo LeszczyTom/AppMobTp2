@@ -7,15 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import fr.uavignon.ceri.tp2.data.Book;
 
-public class RecyclerAdapter extends RecyclerView.Adapter<fr.uavignon.ceri.tp2.RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapter
+        extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private static final String TAG = fr.uavignon.ceri.tp2.RecyclerAdapter.class.getSimpleName();
+
+    private List<Book> productList;
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -35,6 +40,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<fr.uavignon.ceri.tp2.R
     @Override
     public int getItemCount() {
         return Book.books.length;
+    }
+
+    public void setBookList(List<Book> books) {
+        productList = books;
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

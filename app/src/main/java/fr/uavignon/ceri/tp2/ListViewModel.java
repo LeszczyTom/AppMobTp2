@@ -13,11 +13,15 @@ import fr.uavignon.ceri.tp2.data.BookRepository;
 
 public class ListViewModel extends AndroidViewModel {
     private BookRepository repo;
-    private LiveData<List<Book>> allProducts;
+    private LiveData<List<Book>> allBooks;
 
     public ListViewModel(@NonNull Application application) {
         super(application);
         repo = new BookRepository(application);
-        allProducts = repo.getAllBooks();
+        allBooks = repo.getAllBooks();
+    }
+
+    LiveData<List<Book>> getAllBooks() {
+        return allBooks;
     }
 }
