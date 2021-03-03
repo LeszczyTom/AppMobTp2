@@ -1,6 +1,8 @@
 package fr.uavignon.ceri.tp2.data;
 
 import java.util.List;
+
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -23,5 +25,8 @@ public interface BookDao {
     void deleteBook(long id);
 
     @Query("Select * from booksDb")
-    List<Book> getAllBooks();
+    LiveData<List<Book>> getAllBooks();
+
+    @Query("delete from booksDb")
+    void deleteAllBooks();
 }

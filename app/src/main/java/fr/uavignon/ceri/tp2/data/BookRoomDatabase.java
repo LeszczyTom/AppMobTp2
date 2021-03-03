@@ -11,42 +11,45 @@ import androidx.room.DatabaseConfiguration;
 import androidx.room.InvalidationTracker;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
-@Database(entities = Book.class, version = 1)
+@Database(entities = {Book.class}, version = 1)
 public abstract class BookRoomDatabase extends RoomDatabase {
-    @NonNull
-    @Override
-    protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration config) {
-        return null;
-    }
 
-    @NonNull
-    @Override
-    protected InvalidationTracker createInvalidationTracker() {
-        return null;
-    }
+    private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            databaseWriteExecutor.execute(() -> {
+                // Populate the database in the background.
+                BookDao dao = instance.bookDao();
+                dao.deleteAllBooks();
 
-    @Override
-    public void clearAllTables() {
-    }
+                for(Book newBook : Book.books)
+                    dao.insertBook(newBook);
 
-    //ExecutorService
+            });
+        }
+    };
+
+    public abstract BookDao bookDao();
+
+    private static BookRoomDatabase instance;
     private static final int NUMBER_OF_THREADS = 4;
     static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    //Singleton
-    private static BookRoomDatabase instance;
-
-    public abstract BookDao bookDao();
-
     public static BookRoomDatabase getInstance(Context context) {
-        if(instance == null)
-            instance = Room.databaseBuilder(context.getApplicationContext(), BookRoomDatabase.class,
-                    "BookDatabase").build();
+        if(instance == null) {
+            synchronized (BookRoomDatabase.class) {
+                if(instance == null) {
+                    instance = Room.databaseBuilder(context.getApplicationContext(),
+                            BookRoomDatabase.class, "BookDatabase")
+                            .addCallback(sRoomDatabaseCallback).build() ;
+                }
+            }
+        }
         return instance;
     }
-
-    public BookDao bookDao;
 }
