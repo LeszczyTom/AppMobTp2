@@ -14,7 +14,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
 
-@Database(entities = {Book.class}, version = 1)
+@Database(entities = {Book.class}, version = 2)
 public abstract class BookRoomDatabase extends RoomDatabase {
 
     private static RoomDatabase.Callback sRoomDatabaseCallback = new RoomDatabase.Callback() {
@@ -26,8 +26,9 @@ public abstract class BookRoomDatabase extends RoomDatabase {
                 BookDao dao = instance.bookDao();
                 dao.deleteAllBooks();
 
-                for(Book newBook : Book.books)
+                for(Book newBook : Book.books) {
                     dao.insertBook(newBook);
+                }
 
             });
         }
@@ -45,7 +46,7 @@ public abstract class BookRoomDatabase extends RoomDatabase {
             synchronized (BookRoomDatabase.class) {
                 if(instance == null) {
                     instance = Room.databaseBuilder(context.getApplicationContext(),
-                            BookRoomDatabase.class, "BookDatabase")
+                            BookRoomDatabase.class, "db")
                             .addCallback(sRoomDatabaseCallback).build() ;
                 }
             }

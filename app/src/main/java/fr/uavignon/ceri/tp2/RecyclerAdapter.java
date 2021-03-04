@@ -4,7 +4,6 @@ package fr.uavignon.ceri.tp2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -20,30 +19,29 @@ public class RecyclerAdapter
 
     private static final String TAG = fr.uavignon.ceri.tp2.RecyclerAdapter.class.getSimpleName();
 
-    private List<Book> productList;
+    private List<Book> bookList;
 
     @Override
+    @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.card_layout, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.itemTitle.setText(Book.books[i].getTitle());
-        viewHolder.itemDetail.setText(Book.books[i].getAuthors());
-
+        viewHolder.itemTitle.setText(bookList.get(i).getTitle());
+        viewHolder.itemDetail.setText(bookList.get(i).getAuthors());
     }
 
     @Override
     public int getItemCount() {
-        return Book.books.length;
+        return bookList == null ? 0 : bookList.size();
     }
 
     public void setBookList(List<Book> books) {
-        productList = books;
+        bookList = books;
         notifyDataSetChanged();
     }
 
@@ -58,21 +56,19 @@ public class RecyclerAdapter
 
             int position = getAdapterPosition();
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+            itemView.setOnClickListener(v -> {
 
-                    int position = getAdapterPosition();
-                    /* Snackbar.make(v, "Click detected on chapter " + (position+1),
-                        Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                int position1 = getAdapterPosition();
+                /* Snackbar.make(v, "Click detected on chapter " + (position+1),
+                    Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
 
-                     */
-                    ListFragmentDirections.ActionFirstFragmentToSecondFragment action = ListFragmentDirections.actionFirstFragmentToSecondFragment();
-                    action.setBookNum(position);
-                    Navigation.findNavController(v).navigate(action);
+                 */
+                ListFragmentDirections.ActionFirstFragmentToSecondFragment action = ListFragmentDirections.actionFirstFragmentToSecondFragment();
+                action.setBookNum(position1);
+                Navigation.findNavController(v).navigate(action);
 
 
-                }
             });
 
         }

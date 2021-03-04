@@ -56,11 +56,6 @@ public class ListFragment extends Fragment {
 
     private void observerSetup() {
         viewModel.getAllBooks().observe(getViewLifecycleOwner(),
-                new Observer<List<Book>>() {
-                    @Override
-                    public void onChanged(@Nullable final List<Book> Books) {
-                        //adapter.setBookList(Books);
-                    }
-                });
+                Books -> adapter.setBookList(Books));
     }
 }

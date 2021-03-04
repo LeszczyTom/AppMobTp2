@@ -11,7 +11,7 @@ public class Book  {
 
     public static final String TAG = Book.class.getSimpleName();
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name = "bookId")
     private long id;
@@ -65,8 +65,9 @@ public class Book  {
 
 
 
-    public static Book[] books = {new Book("Rouge Brésil", "J.-C. Rufin", "2003", "roman d'aventure, roman historique", "Gallimard"),
+    public static Book[] books = {
             new Book("Guerre et paix", "L. Tolstoï", "1865-1869", "roman historique", "Gallimard"),
+            new Book("Rouge Brésil", "J.-C. Rufin", "2003", "roman d'aventure, roman historique", "Gallimard"),
             new Book("Fondation", "I. Asimov", "1957", "roman de science-fiction", "Hachette"),
             new Book("Du côté de chez Swan", "M. Proust", "1913", "roman", "Gallimard"),
             new Book("Le Comte de Monte-Cristo", "A. Dumas", "1844-1846", "roman-feuilleton", "Flammarion"),
