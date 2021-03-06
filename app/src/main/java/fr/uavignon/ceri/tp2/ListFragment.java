@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import fr.uavignon.ceri.tp2.data.Book;
@@ -43,7 +45,11 @@ public class ListFragment extends Fragment {
         observerSetup();
         recyclerSetup();
 
-
+        view.findViewById(R.id.buttonAdd).setOnClickListener(v -> {
+            ListFragmentDirections.ActionFirstFragmentToSecondFragment action = ListFragmentDirections.actionFirstFragmentToSecondFragment();
+            action.setBookNum(-1);
+            Navigation.findNavController(v).navigate(action);
+        });
     }
 
     private void recyclerSetup() {

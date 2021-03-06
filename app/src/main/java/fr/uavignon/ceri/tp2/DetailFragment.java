@@ -49,12 +49,14 @@ public class DetailFragment extends Fragment {
         textPublisher =  view.findViewById(R.id.editPublisher);
 
         Observer<Book> book = book1 -> {
-            textTitle.setText(book1.getTitle());
-            textAuthors.setText(book1.getAuthors());
-            textYear.setText(book1.getYear());
-            textGenres.setText(book1.getGenres());
-            textPublisher.setText(book1.getPublisher());
-            tmp = book1;
+            if (args.getBookNum() != -1) {
+                textTitle.setText(book1.getTitle());
+                textAuthors.setText(book1.getAuthors());
+                textYear.setText(book1.getYear());
+                textGenres.setText(book1.getGenres());
+                textPublisher.setText(book1.getPublisher());
+                tmp = book1;
+            }
         };
 
         viewModel.getBook().observe(getViewLifecycleOwner(), book );
