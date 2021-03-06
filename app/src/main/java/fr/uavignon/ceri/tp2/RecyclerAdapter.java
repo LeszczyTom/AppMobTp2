@@ -54,18 +54,15 @@ public class RecyclerAdapter
             itemTitle = itemView.findViewById(R.id.item_title);
             itemDetail = itemView.findViewById(R.id.item_detail);
 
-            int position = getAdapterPosition();
-
             itemView.setOnClickListener(v -> {
-
-                int position1 = getAdapterPosition();
+                long id = RecyclerAdapter.this.bookList.get(getAdapterPosition()).getId();
                 /* Snackbar.make(v, "Click detected on chapter " + (position+1),
                     Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
 
                  */
                 ListFragmentDirections.ActionFirstFragmentToSecondFragment action = ListFragmentDirections.actionFirstFragmentToSecondFragment();
-                action.setBookNum(position1);
+                action.setBookNum(id);
                 Navigation.findNavController(v).navigate(action);
 
 
