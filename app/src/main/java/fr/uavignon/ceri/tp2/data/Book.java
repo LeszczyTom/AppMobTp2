@@ -4,10 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.room.*;
 
 @Entity(tableName = "booksDb")
-public class Book  {
+public class Book {
 
     public static final String TAG = Book.class.getSimpleName();
 
@@ -62,7 +63,6 @@ public class Book  {
     public String toString() {
         return this.title+"("+this.authors+")";
     }
-
 
 
     public static Book[] books = {

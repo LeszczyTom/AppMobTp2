@@ -17,4 +17,14 @@ public class DetailViewModel extends AndroidViewModel {
         repo = new BookRepository(application);
         book = repo.getSelectedBook();
     }
+
+    MutableLiveData<Book> getBook() {
+        return book;
+    }
+
+    public void modifyBook(Book book) {
+        repo.updateBook(book);
+    }
+
+    public void getBookById(long id) {repo.getBook(id);}
 }
