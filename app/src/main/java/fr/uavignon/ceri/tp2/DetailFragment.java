@@ -4,9 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,14 +15,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import fr.uavignon.ceri.tp2.data.Book;
 
 public class DetailFragment extends Fragment {
 
     private EditText textTitle, textAuthors, textYear, textGenres, textPublisher;
     private Book tmp;
+    private long id;
     DetailViewModel viewModel;
 
 
@@ -40,8 +40,10 @@ public class DetailFragment extends Fragment {
 
         // Get selected book
         DetailFragmentArgs args = DetailFragmentArgs.fromBundle(getArguments());
-        viewModel.getBookById(args.getBookNum());
+        id = args.getBookNum();
+        viewModel.getBookById(id);
 
+        Button button = view.findViewById(R.id.buttonUpdate);
         textTitle =  view.findViewById(R.id.nameBook);
         textAuthors =  view.findViewById(R.id.editAuthors);
         textYear =  view.findViewById(R.id.editYear);
@@ -49,13 +51,16 @@ public class DetailFragment extends Fragment {
         textPublisher =  view.findViewById(R.id.editPublisher);
 
         Observer<Book> book = book1 -> {
-            if (args.getBookNum() != -1) {
+            if (id != -1) {
                 textTitle.setText(book1.getTitle());
                 textAuthors.setText(book1.getAuthors());
                 textYear.setText(book1.getYear());
                 textGenres.setText(book1.getGenres());
                 textPublisher.setText(book1.getPublisher());
                 tmp = book1;
+            }
+            else {
+                button.setText("Ajouter");
             }
         };
 
@@ -65,12 +70,34 @@ public class DetailFragment extends Fragment {
                 .navigate(R.id.action_SecondFragment_to_FirstFragment));
 
         view.findViewById(R.id.buttonUpdate).setOnClickListener(view12 -> {
-            tmp.setTitle(textTitle.getText().toString());
-            tmp.setYear(textYear.getText().toString());
-            tmp.setPublisher(textPublisher.getText().toString());
-            tmp.setGenres(textGenres.getText().toString());
-            tmp.setAuthors(textAuthors.getText().toString());
-            viewModel.modifyBook(tmp);
+            if (id != -1) {
+                tmp.setTitle(textTitle.getText().toString());
+                tmp.setYear(textYear.getText().toString());
+                tmp.setPublisher(textPublisher.getText().toString());
+                tmp.setGenres(textGenres.getText().toString());
+                tmp.setAuthors(textAuthors.getText().toString());
+            }
+            else {
+                tmp = new Book(textTitle.getText().toString(), textYear.getText().toString(),
+                        textPublisher.getText().toString(), textGenres.getText().toString(),
+                        textAuthors.getText().toString());
+            }
+            String title = textTitle.getText().toString();
+            String year = textYear.getText().toString();
+            String publisher = textPublisher.getText().toString();
+            String genre = textGenres.getText().toString();
+            String author = textAuthors.getText().toString();
+
+            if (!title.equals("") && !year.equals("") && !publisher.equals("") && !genre.equals("") && !author.equals("")) {
+                viewModel.insertOrUpdate(tmp);
+                Snackbar.make(view, title + " ajouté", Snackbar.LENGTH_LONG).show();
+            }
+            else{
+                Snackbar.make(view, "Information incomplete ", Snackbar.LENGTH_LONG).show();
+            }
+
+
+
         });
     }
 }

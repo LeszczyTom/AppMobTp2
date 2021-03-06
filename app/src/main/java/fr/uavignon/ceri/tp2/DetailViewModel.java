@@ -22,8 +22,16 @@ public class DetailViewModel extends AndroidViewModel {
         return book;
     }
 
-    public void modifyBook(Book book) {
-        repo.updateBook(book);
+    public void insertOrUpdate(Book book) {
+        System.out.println(book.getId());
+        if (book.getId() != 0){
+            System.out.println("update");
+            repo.updateBook(book);
+        }
+        else {
+            System.out.println("insert");
+            repo.insertBook(book);
+        }
     }
 
     public void getBookById(long id) {repo.getBook(id);}
