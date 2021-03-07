@@ -1,6 +1,7 @@
 package fr.uavignon.ceri.tp2;
 
 
+import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class RecyclerAdapter
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.card_layout, viewGroup, false);
+
+
         return new ViewHolder(v);
     }
 
@@ -64,10 +67,7 @@ public class RecyclerAdapter
                 ListFragmentDirections.ActionFirstFragmentToSecondFragment action = ListFragmentDirections.actionFirstFragmentToSecondFragment();
                 action.setBookNum(id);
                 Navigation.findNavController(v).navigate(action);
-
-
             });
-
         }
     }
 

@@ -27,8 +27,6 @@ public class ListFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     ListViewModel viewModel;
 
-    RecyclerAdapter adapter2;
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
